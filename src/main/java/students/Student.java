@@ -53,14 +53,25 @@ public final class Student {
     }
   }
 
-  private static StudentCriterion enthusiasticStudent = /*new StudentCriterion() {*/
-
-  /*  @Override
-    public boolean test*/(Student s) -> {
-      return s.getCourses().size() > 3;
-    }
-  /*}*/;
+  public static StudentCriterion getNameLengthCriterion() {
+    return s->s.getName().length() > 4;
+  }
   
+  private static StudentCriterion enthusiasticStudent = 
+      s -> s.getCourses().size() > 3 ;
+  
+//  private static StudentCriterion enthusiasticStudent = (Student s) -> {
+//        return s.getCourses().size() > 3;
+//      } ;
+
+//  private static StudentCriterion enthusiasticStudent = /*new StudentCriterion() {*/
+//
+//  /*  @Override
+//    public boolean test*/(Student s) -> {
+//      return s.getCourses().size() > 3;
+//    }
+//  /*}*/;
+//  
   // Anonymous inner class...
 //  private static StudentCriterion enthusiasticStudent = new /*EnthusiasticStudent();
 //  private static class EnthusiasticStudent implements */ StudentCriterion() {

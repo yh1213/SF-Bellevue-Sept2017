@@ -62,8 +62,9 @@ public class School {
   }
 
   public static void main(String[] args) {
+    Student fred = Student.ofNameGpaCourses("Fred", 3.2F, "Math", "Art", "History");
     List<Student> school = new ArrayList<>();
-    school.add(Student.ofNameGpaCourses("Fred", 3.2F, "Math", "Art", "History"));
+    school.add(fred);
     school.add(Student.ofNameGpaCourses("Jim", 2.2F, "Art", "Geography"));
     school.add(Student.ofNameGpaCourses("Sheila", 3.8F, "Math", "Physics", "Chemistry", "Astrophysics"));
     showAllStudents(school);
@@ -77,5 +78,30 @@ public class School {
     List<Student> enthusiastic = getStudentsByCriterion(
         school, Student.getEnthusiasticCriterion());
     showAllStudents(enthusiastic);
+    System.out.println("-------------------------------");
+//    StudentCriterion shortCrit = s->s.getName().length() < 5;
+//    List<Student> shortNames = getStudentsByCriterion(
+//        school, shortCrit);
+    List<Student> shortNames = getStudentsByCriterion(
+        school, (Student s) -> s.getName().length() < 5);
+    showAllStudents(enthusiastic);
+    
+    
+    // Context can also come from a cast. Note this cast differs
+    // from traditional casts, it actually changes the 
+    boolean b = ((StudentCriterion)(s->s.getName().length() < 5)).test(fred);
+    
+    System.out.println("By Name -------------------------------");
+    school.sort((s1, s2)-> s1.getName().compareTo(s2.getName()));
+    showAllStudents(school);
+    
+    System.out.println("By Grade -------------------------------");
+    school.sort((s1, s2)-> Float.compare(s1.getGpa(), s2.getGpa()));
+    showAllStudents(school);
+    
+    System.out.println("By Descending Enthusiasm -------------------------------");
+    school.sort((s1, s2)-> s2.getCourses().size() - s1.getCourses().size());
+    showAllStudents(school);
+    
   } 
 }
