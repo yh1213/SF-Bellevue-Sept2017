@@ -1,6 +1,7 @@
 package students;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 interface StudentCriterion {
@@ -23,6 +24,10 @@ interface StudentCriterion {
 //}
 
 public class School {
+  
+  public static Comparator<Student> reverse(Comparator<Student> cs) {
+    return (s1, s2) -> cs.compare(s2, s1);
+  }
   
   public static void showAllStudents(Iterable<Student> ls) {
     for (Student s : ls) {
@@ -103,5 +108,16 @@ public class School {
     school.sort((s1, s2)-> s2.getCourses().size() - s1.getCourses().size());
     showAllStudents(school);
     
+    System.out.println("By Length Criterion -------------------------------");
+    List<Student> shortishNames = getStudentsByCriterion(
+        school, Student.getNameLengthCriterion(4));
+    showAllStudents(shortishNames);
+
+    System.out.println("By name -------------------------------");
+    school.sort(Student.getNameComparator());
+    showAllStudents(school);
+    System.out.println("Reverse name -------------------------------");
+    school.sort(reverse(Student.getNameComparator()));
+    showAllStudents(school);
   } 
 }

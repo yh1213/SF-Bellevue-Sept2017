@@ -2,6 +2,7 @@ package students;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public final class Student {
@@ -44,17 +45,22 @@ public final class Student {
   public String toString() {
     return "Student{" + "name=" + name + ", gpa=" + gpa + ", courses=" + courses + '}';
   }
+  
+  public static Comparator<Student> getNameComparator() {
+    return (s1, s2)->s1.name.compareTo(s2.name);
+  }
 
   static class SmartStudent implements StudentCriterion {
 
     @Override
     public boolean test(Student s) {
-      return s.getGpa() > 3;
+      return s.gpa > 3;
     }
   }
 
-  public static StudentCriterion getNameLengthCriterion() {
-    return s->s.getName().length() > 4;
+  public static StudentCriterion getNameLengthCriterion(int threshold) {
+//    threshold ++;
+    return s->s.getName().length() > threshold;
   }
   
   private static StudentCriterion enthusiasticStudent = 
