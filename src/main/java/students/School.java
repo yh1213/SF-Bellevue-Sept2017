@@ -150,8 +150,14 @@ public class School {
     Criterion<String> shortString = s->s.length() < 7;
     Criterion<String> startsLowerCase = s->Character.isLowerCase(s.charAt(0));
     List<String> shortText = getByCriterion(text, shortString.and(startsLowerCase));
-    for (String s : shortText) {
-      System.out.println("> " + s);
-    }
+//    for (String s : shortText) {
+//      System.out.println("> " + s);
+//    }
+    shortText.forEach(s->System.out.println("> " + s));
+    
+    System.out.println("-------------------------------");
+    shortText.replaceAll(s->s.toUpperCase());
+    shortText.forEach(s->System.out.println("> " + s));
+    
   } 
 }
