@@ -1,11 +1,24 @@
 package students;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-interface StudentCriterion {
+interface StudentCriterion extends Criterion<Student> {
   boolean test(Student s);
+}
+
+interface Criterion<E> {
+  boolean test(E s);
+  
+  static <F> Criterion<F> not(Criterion<F> original) {
+    return x -> ! original.test(x);
+  }
+  
+  default Criterion<E> and(Criterion<E> other) {
+    return x -> this.test(x) && other.test(x);
+  }
 }
 
 
@@ -65,6 +78,17 @@ public class School {
     }
     return rv;
   }
+  
+  public static <E> List<E> getByCriterion(
+      Iterable<E> in, Criterion<E> criterion) {
+    List<E> rv = new ArrayList<>();
+    for (E s : in) {
+      if (criterion.test(s)) {
+        rv.add(s);
+      }
+    }
+    return rv;
+  }
 
   public static void main(String[] args) {
     Student fred = Student.ofNameGpaCourses("Fred", 3.2F, "Math", "Art", "History");
@@ -87,7 +111,7 @@ public class School {
 //    StudentCriterion shortCrit = s->s.getName().length() < 5;
 //    List<Student> shortNames = getStudentsByCriterion(
 //        school, shortCrit);
-    List<Student> shortNames = getStudentsByCriterion(
+    List<Student> shortNames = getByCriterion(
         school, (Student s) -> s.getName().length() < 5);
     showAllStudents(enthusiastic);
     
@@ -109,7 +133,7 @@ public class School {
     showAllStudents(school);
     
     System.out.println("By Length Criterion -------------------------------");
-    List<Student> shortishNames = getStudentsByCriterion(
+    List<Student> shortishNames = getByCriterion(
         school, Student.getNameLengthCriterion(4));
     showAllStudents(shortishNames);
 
@@ -119,5 +143,15 @@ public class School {
     System.out.println("Reverse name -------------------------------");
     school.sort(reverse(Student.getNameComparator()));
     showAllStudents(school);
+    
+    System.out.println("short Strings -------------------------------");
+    List<String> text = Arrays.asList("Albert", "Orinoco", "WaffleSprocket", "int");
+
+    Criterion<String> shortString = s->s.length() < 7;
+    Criterion<String> startsLowerCase = s->Character.isLowerCase(s.charAt(0));
+    List<String> shortText = getByCriterion(text, shortString.and(startsLowerCase));
+    for (String s : shortText) {
+      System.out.println("> " + s);
+    }
   } 
 }
