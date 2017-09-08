@@ -20,6 +20,7 @@ public class Concordance {
           .map(s->s.toLowerCase())
           .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
           .entrySet().stream()
+//          .sorted((e1, e2)-> Long.compare(e2.getValue(), e1.getValue()))
           .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
           .limit(200)
           .forEach(e->System.out.printf("%20s : %5d\n", e.getKey(), e.getValue()));
