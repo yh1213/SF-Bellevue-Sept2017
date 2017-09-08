@@ -32,11 +32,10 @@ public class ProdConsExample {
         }
         delay();
         try {
-          q.put(dat);
+          q.put(dat); dat = null;
         } catch (InterruptedException ex) {
           // nothing to do
         }
-        dat = null;
       }
       System.out.println("Producer finished...");
     }
